@@ -27,6 +27,7 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > serviceAccountKey.json
 
+
       - name: Run update script
         run: python update_metals.py
         env:
