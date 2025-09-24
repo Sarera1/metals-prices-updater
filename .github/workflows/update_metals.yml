@@ -6,28 +6,25 @@ on:
   workflow_dispatch: # Можливість запуску вручну
 
 jobs:
-  update:
+  update_prices:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.8'
 
       - name: Install dependencies
-        run: pip install firebase-admin
-
-      - name: Save Firebase key to file
         run: |
-          import os
-          key = os.environ['FIREBASE_KEY']
-          with open("serviceAccountKey.json", "w") as f:
-              f.write(key)
-        shell: python
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run update script
-        run: python update_metals.py
+        run: |
+          python update_metals.py
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
