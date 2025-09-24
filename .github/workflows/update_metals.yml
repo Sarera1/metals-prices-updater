@@ -2,15 +2,15 @@ name: Update Metals Prices
 
 on:
   schedule:
-    - cron: '0 * * * *'  # запуск щогодини
-  workflow_dispatch:  # можливість запуску вручну
+    - cron: '0 * * * *' 
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -21,8 +21,13 @@ jobs:
       - name: Install dependencies
         run: pip install firebase-admin
 
-      - name: Save Firebase key
-        run: echo "${{ secrets.FIREBASE_KEY }}" > serviceAccountKey.json
+      - name: Save Firebase key to file
+        run: |
+          import os
+          key = os.environ['FIREBASE_KEY']
+          with open("serviceAccountKey.json", "w") as f:
+              f.write(key)
+        shell: python
 
       - name: Run update script
         run: python update_metals.py
