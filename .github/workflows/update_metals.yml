@@ -25,7 +25,8 @@ jobs:
 
       - name: Create Firebase key file
         run: |
-          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > serviceAccountKey.json
+          echo "${{ secrets.FIREBASE_KEY }}" > serviceAccountKey.json
+
 
 
       - name: Run update script
