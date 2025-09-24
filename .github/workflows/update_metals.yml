@@ -25,7 +25,8 @@ jobs:
 
       - name: Create Firebase key file
         run: |
-          echo "${{ secrets.FIREBASE_KEY }}" > serviceAccountKey.json
+          printf "%s" "${{ secrets.FIREBASE_KEY }}" > serviceAccountKey.json
+
 
 
 
