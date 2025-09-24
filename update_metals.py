@@ -18,7 +18,7 @@ cred = credentials.Certificate(cred_dict)
 # Если Firebase не инициализировано, инициализируем
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://metals-prices-27b05-default-rtdb.europe-west1.firebasedatabase.app/'
+        'databaseURL': 'https://metals-prices-27b05-default-rtdb.firebaseio.com/'
     })
 
 # Данные для обновления
