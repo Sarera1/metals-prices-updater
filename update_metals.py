@@ -1,28 +1,26 @@
-import json
-from firebase_admin import credentials, initialize_app
+import firebase_admin
+from firebase_admin import credentials, db
 
-# Чтение содержимого файла и вывод на экран
-file_path = "serviceAccountKey.json"
-
-try:
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
-        print("Файл успешно прочитан.")
-        print("Первые 100 символов файла:")
-        print(content[:100])  # Выводим первые 100 символов для проверки
-
-        # Преобразование содержимого в JSON для проверки формата
-        json_data = json.loads(content)
-        print("JSON формат валиден.")
+# --- Ініціалізація Firebase ---
+if not firebase_admin._apps:
+    # Указываем путь к JSON файлу с ключом
+    cred = credentials.Certificate("serviceAccountKey.json")
     
-    # Инициализация Firebase
-    cred = credentials.Certificate(file_path)
-    initialize_app(cred)
-    print("Firebase инициализировано успешно.")
-    
-except json.JSONDecodeError as e:
-    print(f"Ошибка декодирования JSON: {e}")
-except FileNotFoundError as e:
-    print(f"Ошибка: Файл не найден. {e}")
-except Exception as e:
-    print(f"Произошла ошибка: {e}")
+    # Инициализация приложения Firebase с указанием URL базы данных
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://metals-prices-27b05-default-rtdb.europe-west1.firebasedatabase.app/'
+    })
+
+# --- Дані для оновлення ---
+data = {
+    "gold": 1925.30,
+    "silver": 24.56,
+    "platinum": 894.10
+}
+
+# --- Запис у Firebase ---
+# Ссылка на базу данных, куда будут записываться данные
+ref = db.reference("/metals")
+ref.set(data)  # Записываем данные в Firebase
+
+print("✅ Дані оновлено у Firebase")
